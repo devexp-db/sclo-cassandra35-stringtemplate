@@ -39,7 +39,6 @@ API documentation for %{name}.
 %patch1 -p1
 
 %build
-rm -rf $RPM_BUILD_ROOT
 rm -f lib/*.jar
 ant jar
 ant javadocs -Dpackages= -Djavadocs.additionalparam=
@@ -67,5 +66,5 @@ ant test
 %{_javadocdir}/%{name}
 
 %changelog
-* Mon Mar 31 2008 Colin Walters <walters@redhat.com> - 3.1-1
+* Sat Apr 05 2008 Colin Walters <walters@redhat.com> - 3.1-1
 - First version
