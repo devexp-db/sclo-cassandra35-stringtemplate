@@ -1,0 +1,26 @@
+--- stringtemplate-3.1.orig/build.xml	2008-01-23 21:24:06.000000000 -0500
++++ stringtemplate-3.1/build.xml	2008-04-04 18:54:46.000000000 -0400
+@@ -235,7 +235,22 @@
+   <!-- =================================================================== -->
+   <target name="clean-all" depends="clean-classes,clean-jars, clean-dist">
+     <echo message="Cleaned all."/>
++  </target>
++
++  <!-- =================================================================== -->
++  <!-- Unit tests                                                          -->
++  <!-- =================================================================== -->
++  <target name="test" depends="compile">
++    <junit printsummary="yes" fork="yes" haltonfailure="yes">
++      <classpath>
++        <pathelement location="${build.classes}"/>
++        <pathelement location="${build.src}"/>
++        <pathelement path="${java.class.path}"/>
++      </classpath>
++
++      <formatter type="plain"/>
++      <test name="org.antlr.stringtemplate.test.TestStringTemplate"/>
++    </junit>
+   </target>
+-
+ </project>
+ 
