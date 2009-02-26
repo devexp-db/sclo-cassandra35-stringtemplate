@@ -1,7 +1,7 @@
 Summary: A Java template engine
 Name: stringtemplate
 Version: 3.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 URL: http://www.stringtemplate.org/
 Source0: http://www.stringtemplate.org/download/stringtemplate-3.1.tar.gz
 # Both patches emailed to upstream 20080404
@@ -66,5 +66,8 @@ ant test
 %{_javadocdir}/%{name}
 
 %changelog
+* Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
+
 * Sat Apr 05 2008 Colin Walters <walters@redhat.com> - 3.1-1
 - First version
