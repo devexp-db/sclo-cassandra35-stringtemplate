@@ -1,7 +1,7 @@
 Summary: A Java template engine
 Name: stringtemplate
 Version: 3.2.1
-Release: 3%{?dist}
+Release: 4%{?dist}
 URL: http://www.stringtemplate.org/
 Source0: http://www.stringtemplate.org/download/stringtemplate-%{version}.tar.gz
 # Build jUnit tests + make the antlr2 generated code before preparing sources
@@ -76,6 +76,9 @@ ant test
 %{_javadocdir}/%{name}
 
 %changelog
+* Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.2.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
 * Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.2.1-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
