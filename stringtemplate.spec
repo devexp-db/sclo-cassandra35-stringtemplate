@@ -1,7 +1,7 @@
 Summary: A Java template engine
 Name: stringtemplate
 Version: 3.2.1
-Release: 4%{?dist}
+Release: 5%{?dist}
 URL: http://www.stringtemplate.org/
 Source0: http://www.stringtemplate.org/download/stringtemplate-%{version}.tar.gz
 # Build jUnit tests + make the antlr2 generated code before preparing sources
@@ -17,6 +17,7 @@ BuildRequires: java-devel >= 1:1.6.0
 BuildRequires: jpackage-utils
 Requires: java >= 1:1.6.0
 Requires: jpackage-utils
+Requires: antlr-tool
 
 %description
 StringTemplate is a java template engine (with ports for 
@@ -76,6 +77,9 @@ ant test
 %{_javadocdir}/%{name}
 
 %changelog
+* Fri Feb 1 2013 Conrad Meyer <konrad@tylerc.org> - 3.2.1-5
+- Add missing dep on antlr-tool (#904979)
+
 * Sat Jul 21 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.2.1-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
