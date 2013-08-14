@@ -1,7 +1,7 @@
 Summary: A Java template engine
 Name: stringtemplate
 Version: 3.2.1
-Release: 6%{?dist}
+Release: 7%{?dist}
 URL: http://www.stringtemplate.org/
 Source0: http://www.stringtemplate.org/download/stringtemplate-%{version}.tar.gz
 # Build jUnit tests + make the antlr2 generated code before preparing sources
@@ -9,14 +9,12 @@ Patch0: stringtemplate-3.1-build-junit.patch
 License: BSD
 Group: Development/Libraries
 BuildArch: noarch
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: ant-antlr, ant-junit
 BuildRequires: antlr
 # Standard deps
 BuildRequires: java-devel >= 1:1.6.0
 BuildRequires: jpackage-utils
 Requires: java >= 1:1.6.0
-Requires: jpackage-utils
 Requires: antlr-tool
 
 %description
@@ -44,40 +42,27 @@ ant jar
 ant javadocs -Dpackages= -Djavadocs.additionalparam=
 
 %install
-rm -rf $RPM_BUILD_ROOT
 install -D build/stringtemplate.jar $RPM_BUILD_ROOT%{_datadir}/java/stringtemplate.jar
-(cd $RPM_BUILD_ROOT%{_datadir}/java/ && ln -s stringtemplate.jar stringtemplate-%{version}.jar)
 install -dm 755 $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 cp -pR docs/api/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 
 install -Dpm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
-%add_to_maven_depmap org.antlr %{name} %{version} JPP %{name}
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-%post
-%update_maven_depmap
-
-%postun
-%update_maven_depmap
-
-# Fails for some unknown reason now, but it's worked historically... -CEM
-#%%check
-#ant test
+%add_maven_depmap JPP-%{name}.pom stringtemplate.jar
 
 %files
-%defattr(-,root,root)
 %doc LICENSE.txt README.txt
-%{_datadir}/java/*.jar
+%{_datadir}/java/%{name}.jar
 %{_mavenpomdir}/JPP-%{name}.pom
-%config(noreplace) %{_mavendepmapfragdir}/%{name}
+%{_mavendepmapfragdir}/%{name}
 
 %files javadoc
-%defattr(-,root,root)
+%doc LICENSE.txt
 %{_javadocdir}/%{name}
 
 %changelog
+* Wed Aug 14 2013 Mat Booth <fedora@matbooth.co.uk> - 3.2.1-7
+- Fix FTBFS #993386
+
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.2.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
