@@ -1,7 +1,7 @@
 Summary: A Java template engine
 Name: stringtemplate
 Version: 3.2.1
-Release: 7%{?dist}
+Release: 8%{?dist}
 URL: http://www.stringtemplate.org/
 Source0: http://www.stringtemplate.org/download/stringtemplate-%{version}.tar.gz
 # Build jUnit tests + make the antlr2 generated code before preparing sources
@@ -14,7 +14,6 @@ BuildRequires: antlr
 # Standard deps
 BuildRequires: java-devel >= 1:1.6.0
 BuildRequires: jpackage-utils
-Requires: java >= 1:1.6.0
 Requires: antlr-tool
 
 %description
@@ -60,6 +59,9 @@ install -Dpm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
 %{_javadocdir}/%{name}
 
 %changelog
+* Fri Mar 28 2014 Michael Simacek <msimacek@redhat.com> - 3.2.1-8
+- Use Requires: java-headless rebuild (#1067528)
+
 * Wed Aug 14 2013 Mat Booth <fedora@matbooth.co.uk> - 3.2.1-7
 - Fix FTBFS #993386
 
