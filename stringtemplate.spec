@@ -1,7 +1,7 @@
 Summary: A Java template engine
 Name: stringtemplate
 Version: 3.2.1
-Release: 9%{?dist}
+Release: 10%{?dist}
 URL: http://www.stringtemplate.org/
 Source0: http://www.stringtemplate.org/download/stringtemplate-%{version}.tar.gz
 # Build jUnit tests + make the antlr2 generated code before preparing sources
@@ -48,17 +48,17 @@ cp -pR docs/api/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 install -Dpm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
 %add_maven_depmap JPP-%{name}.pom stringtemplate.jar
 
-%files
+%files -f .mfiles
 %doc LICENSE.txt README.txt
-%{_datadir}/java/%{name}.jar
-%{_mavenpomdir}/JPP-%{name}.pom
-%{_mavendepmapfragdir}/%{name}
 
 %files javadoc
 %doc LICENSE.txt
 %{_javadocdir}/%{name}
 
 %changelog
+* Fri Sep 05 2014 Yaakov Selkowitz <yselkowi@redhat.com> - 3.2.1-10
+- Fix for F21 XMvn changes (#1107380)
+
 * Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.2.1-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
