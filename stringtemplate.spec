@@ -1,20 +1,25 @@
-Summary: A Java template engine
-Name: stringtemplate
-Version: 3.2.1
-Release: 12%{?dist}
-URL: http://www.stringtemplate.org/
-Source0: http://www.stringtemplate.org/download/stringtemplate-%{version}.tar.gz
+%{?scl:%scl_package stringtemplate}
+%{!?scl:%global pkg_name %{name}}
+
+Name:		%{?scl_prefix}stringtemplate
+Version:	3.2.1
+Release:	13%{?dist}
+Summary:	A Java template engine
+License:	BSD
+URL:		http://www.stringtemplate.org/
+Source0:	http://www.stringtemplate.org/download/%{pkg_name}-%{version}.tar.gz
 # Build jUnit tests + make the antlr2 generated code before preparing sources
-Patch0: stringtemplate-3.1-build-junit.patch
-License: BSD
-Group: Development/Libraries
-BuildArch: noarch
-BuildRequires: ant-antlr, ant-junit
-BuildRequires: antlr
-# Standard deps
-BuildRequires: java-devel >= 1:1.6.0
-BuildRequires: jpackage-utils
-Requires: antlr-tool
+Patch0:		%{pkg_name}-3.1-build-junit.patch
+
+BuildRequires:	%{?scl_prefix_java_common}ant-antlr
+BuildRequires:	%{?scl_prefix_java_common}ant-junit
+BuildRequires:	%{?scl_prefix_java_common}antlr-tool
+BuildRequires:	%{?scl_prefix_java_common}javapackages-local
+
+Requires:	%{?scl_prefix_java_common}antlr-tool
+%{?scl:Requires: %scl_runtime}
+
+BuildArch:	noarch
 
 %description
 StringTemplate is a java template engine (with ports for 
@@ -23,39 +28,44 @@ emails, or any other formatted text output. StringTemplate
 is particularly good at multi-targeted code generators,
 multiple site skins, and internationalization/localization.
 
-%package        javadoc
-Summary:        API documentation for %{name}
-Group:          Documentation
-Requires:       java-javadoc
+%package javadoc
+Summary:	API documentation for %{name}
 
-%description    javadoc
+%description javadoc
 API documentation for %{name}.
 
 %prep
-%setup -q
+%setup -q -n %{pkg_name}-%{version}
 %patch0
+
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
+%mvn_file org.antlr:stringtemplate %{pkg_name}
+%{?scl:EOF}
 
 %build
 rm -rf lib target
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 ant jar
 ant javadocs -Dpackages= -Djavadocs.additionalparam=
 
-%install
-install -D build/stringtemplate.jar $RPM_BUILD_ROOT%{_datadir}/java/stringtemplate.jar
-install -dm 755 $RPM_BUILD_ROOT%{_javadocdir}/%{name}
-cp -pR docs/api/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
+%mvn_artifact pom.xml build/%{pkg_name}.jar
+%{?scl:EOF}
 
-install -Dpm 644 pom.xml $RPM_BUILD_ROOT%{_mavenpomdir}/JPP-%{name}.pom
-%add_maven_depmap JPP-%{name}.pom stringtemplate.jar
+%install
+%{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
+%mvn_install -J docs/api
+%{?scl:EOF}
 
 %files -f .mfiles
 %doc LICENSE.txt README.txt
 
-%files javadoc
+%files javadoc -f .mfiles-javadoc
 %doc LICENSE.txt
-%{_javadocdir}/%{name}
 
 %changelog
+* Thu Dec 08 2016 Tomas Repik <trepik@redhat.com> - 3.2.1-13
+- scl conversion, add_maven_depmap migration
+
 * Fri Feb 05 2016 Fedora Release Engineering <releng@fedoraproject.org> - 3.2.1-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
